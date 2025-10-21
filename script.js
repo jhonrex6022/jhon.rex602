@@ -545,7 +545,7 @@ function handleFormSubmit(e) {
     .catch(error => {
       console.error('Fetch error:', error);
       // Fallback: Open email client
-      const mailtoLink = `mailto:jhonrexbenavente@gmail.com?subject=Contact from Portfolio&body=Name: ${formData.get('name')}%0D%0AEmail: ${formData.get('email')}%0D%0A%0D%0AMessage:%0D%0A${formData.get('message')}`;
+      const mailtoLink = `mailto:jhonrex.rivera.benavente@gmail.com?subject=Contact from Portfolio&body=Name: ${formData.get('name')}%0D%0AEmail: ${formData.get('email')}%0D%0A%0D%0AMessage:%0D%0A${formData.get('message')}`;
       window.location.href = mailtoLink;
       showNotification('Opening email client...', 'success');
       submitBtn.disabled = false;
