@@ -502,42 +502,97 @@ function handleFormSubmit(e) {
     return;
   }
   
-  // Send data via AJAX
-  fetch('contact.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    console.log('Response status:', response.status);
-    if (!response.ok) {
-      throw new Error('HTTP error ' + response.status);
-    }
-    return response.text();
-  })
-  .then(text => {
-    console.log('Response text:', text);
-    try {
-      const data = JSON.parse(text);
+  // Disable submit button to prevent double submission
+  const submitBtn = elements.contactForm.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+  
+  // Check if running on GitHub Pages or static hosting
+  const isStaticHosting = window.location.hostname.includes('github.io') || 
+                          !window.location.hostname.includes('localhost');
+  
+  if (isStaticHosting) {
+    // Use FormSubmit.co (free form backend for static sites)
+    // Replace with your email or use Formspree/Web3Forms
+    const formSubmitEndpoint = 'https://formsubmit.co/ajax/jhonrexbenavente@gmail.com'; // Replace with your email
+    
+    fetch(formSubmitEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message'),
+        _subject: 'New Contact Form Submission - Portfolio',
+        _captcha: 'false'
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
       if (data.success) {
-        showNotification(data.message, 'success');
+        showNotification('Message sent successfully! I will get back to you soon.', 'success');
         elements.contactForm.reset();
       } else {
-        // Show debug info in console if available
-        if (data.debug) {
-          console.error('Server error:', data.debug);
-        }
-        showNotification(data.message, 'error');
+        showNotification('Failed to send message. Please try again.', 'error');
       }
-    } catch (e) {
-      console.error('JSON parse error:', e);
-      console.error('Response was:', text);
-      showNotification('Server error. Please check console for details.', 'error');
-    }
-  })
-  .catch(error => {
-    console.error('Fetch error:', error);
-    showNotification('Connection error: ' + error.message, 'error');
-  });
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+      // Fallback: Open email client
+      const mailtoLink = `mailto:jhonrexbenavente@gmail.com?subject=Contact from Portfolio&body=Name: ${formData.get('name')}%0D%0AEmail: ${formData.get('email')}%0D%0A%0D%0AMessage:%0D%0A${formData.get('message')}`;
+      window.location.href = mailtoLink;
+      showNotification('Opening email client...', 'success');
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    });
+  } else {
+    // Use PHP backend for local/traditional hosting
+    fetch('contact.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      console.log('Response status:', response.status);
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+      return response.text();
+    })
+    .then(text => {
+      console.log('Response text:', text);
+      try {
+        const data = JSON.parse(text);
+        if (data.success) {
+          showNotification(data.message, 'success');
+          elements.contactForm.reset();
+        } else {
+          // Show debug info in console if available
+          if (data.debug) {
+            console.error('Server error:', data.debug);
+          }
+          showNotification(data.message, 'error');
+        }
+      } catch (e) {
+        console.error('JSON parse error:', e);
+        console.error('Response was:', text);
+        showNotification('Server error. Please check console for details.', 'error');
+      }
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+      showNotification('Connection error: ' + error.message, 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    });
+  }
 }
 
 function showNotification(message, type = 'success') {
