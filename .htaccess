@@ -1,3 +1,5 @@
+# Security: Prevent this site from being loaded in a frame or iframe
+Header always set X-Frame-Options "DENY"
 Options +Indexes
 DirectoryIndex index.php index.html
 
