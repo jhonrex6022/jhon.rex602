@@ -426,11 +426,15 @@ function initContactForm() {
   if (!elements.contactForm) return;
   
   elements.contactForm.addEventListener('submit', handleFormSubmit);
-  
-  // Real-time validation
+  // Remove error message on blur (but do not show notification)
   const inputs = elements.contactForm.querySelectorAll('input, textarea');
   inputs.forEach(input => {
-    input.addEventListener('blur', () => validateField(input));
+    input.addEventListener('blur', () => {
+      // Only remove error message and border color
+      const existingError = input.parentElement.querySelector('.error-message');
+      if (existingError) existingError.remove();
+      input.style.borderColor = '';
+    });
   });
 }
 
@@ -455,7 +459,6 @@ function validateField(field) {
   if (existingError) {
     existingError.remove();
   }
-  
   // Add error if invalid
   if (!isValid) {
     field.style.borderColor = 'var(--color-error)';
@@ -473,7 +476,6 @@ function validateField(field) {
       field.style.borderColor = '';
     }, 2000);
   }
-  
   return isValid;
 }
 
@@ -485,15 +487,18 @@ function handleFormSubmit(e) {
   // Validate all fields
   const inputs = elements.contactForm.querySelectorAll('input, textarea');
   let allValid = true;
-  
+  let firstInvalidField = null;
   inputs.forEach(input => {
     if (!validateField(input)) {
       allValid = false;
+      if (!firstInvalidField) firstInvalidField = input;
     }
   });
-  
   if (!allValid) {
-    showNotification('Please fix the errors in the form', 'error');
+    if (firstInvalidField) {
+      showNotification('This field is required', 'error');
+      firstInvalidField.focus();
+    }
     return;
   }
   
