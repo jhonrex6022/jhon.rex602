@@ -1,0 +1,9 @@
+# PHPMailer Setup Instructions
+
+1. Download PHPMailer from https://github.com/PHPMailer/PHPMailer
+2. Extract the PHPMailer archive and copy the `src` folder into your project directory, e.g. `c:/xampp/htdocs/rex/PHPMailer/src`
+3. Update your `contact.php` as shown below.
+4. Create a Gmail App Password if using Gmail SMTP (see Google Account > Security > App Passwords)
+5. Test your contact form.
+
+---

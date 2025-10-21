@@ -1,0 +1,15 @@
+2025-10-21 10:13:22 === NEW REQUEST ===
+2025-10-21 10:13:22 PHPMailer files loaded successfully
+2025-10-21 10:13:22 Invalid request method: GET
+2025-10-21 10:13:47 === NEW REQUEST ===
+2025-10-21 10:13:47 PHPMailer files loaded successfully
+2025-10-21 10:13:47 Request method: POST
+2025-10-21 10:13:47 Form data - Name: Jhon Rex Benavente, Email: admin@omniworxinc.com, Message length: 6
+2025-10-21 10:13:47 Starting PHPMailer configuration
+2025-10-21 10:13:47 PHPMailer class exists, creating instance
+2025-10-21 10:13:47 Configuring SMTP settings
+2025-10-21 10:13:47 Setting email addresses
+2025-10-21 10:13:47 Setting email content
+2025-10-21 10:13:47 Attempting to send email
+2025-10-21 10:13:51 PHPMailer send result: SUCCESS | ErrorInfo: 
+2025-10-21 10:13:51 Email sent successfully
