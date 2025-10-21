@@ -935,7 +935,7 @@ img {
 .footer {
   background: var(--gradient-primary);
   color: var(--color-white);
-  padding: var(--space-3xl) 0 var(--space-lg);
+  padding: var(--space-2xl) 0 var(--space-md);
 }
 
 .footer-container {
@@ -946,40 +946,52 @@ img {
 
 .footer-top {
   display: grid;
-  grid-template-columns: 1.5fr 2fr;
-  gap: var(--space-xl);
+  grid-template-columns: 1fr 1.5fr;
+  gap: var(--space-2xl);
   padding-bottom: var(--space-xl);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
+  align-items: start;
+}
+
+.footer-brand {
+  max-width: 350px;
 }
 
 .footer-brand h3 {
-  font-size: 2rem;
-  margin-bottom: var(--space-sm);
+  font-size: 1.75rem;
+  margin-bottom: var(--space-xs);
   color: var(--color-white);
 }
 
 .footer-brand p {
   opacity: 0.9;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+  line-height: 1.4;
 }
 
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xl);
+  max-width: 500px;
+  margin-left: auto;
 }
 
 .footer-column h4 {
-  font-size: 1.1rem;
-  margin-bottom: var(--space-md);
+  font-size: 1rem;
+  margin-bottom: var(--space-sm);
   color: var(--color-white);
+  font-weight: 600;
 }
 
 .footer-column a {
   display: block;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
   transition: all var(--transition-base);
+  font-size: 0.9rem;
 }
 
 .footer-column a:hover {
@@ -989,16 +1001,17 @@ img {
 
 .social-links {
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   margin-top: var(--space-sm);
+  flex-wrap: wrap;
 }
 
 .social-links a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   transition: all var(--transition-base);
@@ -1014,13 +1027,20 @@ img {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--space-md);
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 .footer-legal {
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   align-items: center;
+  font-size: 0.9rem;
 }
 
 .footer-legal a {
