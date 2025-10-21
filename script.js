@@ -515,7 +515,7 @@ function handleFormSubmit(e) {
   if (isStaticHosting) {
     // Use FormSubmit.co (free form backend for static sites)
     // Replace with your email or use Formspree/Web3Forms
-    const formSubmitEndpoint = 'https://formsubmit.co/ajax/jhonrexbenavente@gmail.com'; // Replace with your email
+    const formSubmitEndpoint = 'https://formsubmit.co/ajax/jhonrex.rivera.benavente@gmail.com'; // Replace with your email
     
     fetch(formSubmitEndpoint, {
       method: 'POST',
