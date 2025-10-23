@@ -536,6 +536,8 @@ function handleFormSubmit(e) {
       if (data.success) {
         showNotification('Message sent successfully! I will get back to you soon.', 'success');
         elements.contactForm.reset();
+      } else if (data.message && data.message.includes('verify your email address')) {
+        showNotification('Please check your email and verify it with FormSubmit.co before you can receive messages.', 'error');
       } else {
         showNotification('Failed to send message. Please try again.', 'error');
       }
