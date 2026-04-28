@@ -1,0 +1,26 @@
+# Credentials & sensitive config — never commit
+config.php
+
+# Debug & log files
+contact_debug.log
+*.log
+
+# Backup files
+*.backup
+Index.html.backup
+
+# Internal documentation (not needed on GitHub)
+CHANGES_SUMMARY.md
+DOCUMENTATION.md
+HTML_CLEANUP_GUIDE.md
+QUICKSTART.md
+VISUAL_GUIDE.md
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Video files (large assets — host separately or use Git LFS)
+*.mp4

@@ -1,886 +1,189 @@
-/* ============================================
-   MODERN DEVELOPER PORTFOLIO - JAVASCRIPT
-   Version: 3.0
+﻿/* ============================================
+   REX BENAVENTE — PORTFOLIO JAVASCRIPT
    ============================================ */
 
-'use strict';
+"use strict";
 
 // ============================================
-// PROJECT DATA
+// NAVBAR: scroll shadow + active link
 // ============================================
-const projectsData = [
-  {
-    id: 1,
-    title: 'Helpdesk System',
-    image: 'helpdesk.png',
-    description: 'A comprehensive ticketing system for managing internal and external issues.',
-    fullDescription: 'An enterprise-level helpdesk system designed to streamline issue resolution for both internal company operations and external client concerns. This system enables organizations to efficiently track, categorize, and resolve technical and operational issues while maintaining clear communication channels with all stakeholders.',
-    tags: ['PHP', 'MySQL', 'JavaScript', 'Bootstrap'],
-    features: [
-      'Internal issue tracking for company operations',
-      'External ticketing for client support',
-      'Multi-level ticket categorization and prioritization',
-      'Role-based access control (Admin, Agent, User)',
-      'Real-time ticket status tracking and updates',
-      'Comprehensive reporting and analytics dashboard',
-      'Email notifications for ticket updates',
-      'Attachment support for issue documentation'
-    ],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
-    id: 2,
-    title: 'HRIS System',
-    image: 'hris.mp4',
-    description: 'Complete human resource information system for workforce management.',
-    fullDescription: 'A robust Human Resource Information System that centralizes employee data and automates HR processes. This comprehensive solution handles everything from employee onboarding to performance management, leave tracking, and payroll integration, significantly improving HR operational efficiency.',
-    tags: ['PHP', 'MySQL', 'JavaScript', 'Bootstrap'],
-    features: [
-      'Employee database with complete profile management',
-      'Attendance and leave management system',
-      'Payroll processing and salary computation',
-      'Performance evaluation and appraisal tracking',
-      'Document management for HR files',
-      'Employee self-service portal',
-      'Comprehensive HR reports and analytics',
-      'Organizational chart visualization'
-    ],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
-    id: 3,
-    title: 'Company Website',
-    image: 'website.mp4',
-    description: 'Modern corporate website with CMS for business presence.',
-    fullDescription: 'A professional corporate website built to establish strong online presence and showcase company services. Features a custom content management system allowing non-technical staff to update content easily. Built with responsive design and optimized performance for excellent user experience.',
-    tags: ['PHP', 'MySQL', 'JavaScript', 'Bootstrap'],
-    features: [
-      'Custom CMS for easy content management',
-      'Fully responsive design across all devices',
-      'Contact form with inquiry management',
-      'Service showcase and portfolio sections',
-      'Company blog with category management',
-      'Image gallery and media management',
-      'Fast loading times and performance optimization',
-      'Secure admin panel with user management'
-    ],
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  {
-    id: 4,
-    title: 'Portfolio Website',
-    image: 'portfolio.jpg',
-    description: 'Personal portfolio showcasing projects and technical expertise.',
-    fullDescription: 'A modern, responsive portfolio website designed to showcase my development projects and technical skills. Built with clean code and best practices, featuring smooth animations, interactive elements, and optimized performance. Demonstrates proficiency in front-end development and attention to detail.',
-    tags: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
-    features: [
-      'Modern and clean design with smooth animations',
-      'Fully responsive across all devices',
-      'Interactive project showcase with modal details',
-      'Animated skill bars and statistics',
-      'Contact form with validation',
-      'Optimized images and fast loading',
-      'Dynamic content rendering',
-      'Cross-browser compatibility'
-    ],
-    liveUrl: '#',
-    githubUrl: '#'
-  }
-];
+(function initNavbar() {
+  const navbar = document.getElementById("navbar");
+  const navLinks = document.querySelectorAll(".nav-link");
+  const sections = document.querySelectorAll("section[id]");
 
-// ============================================
-// STATE MANAGEMENT
-// ============================================
-const state = {
-  currentProject: null,
-  isModalOpen: false,
-  isMenuOpen: false
-};
+  function onScroll() {
+    navbar.classList.toggle("scrolled", window.scrollY > 20);
 
-// ============================================
-// DOM ELEMENTS
-// ============================================
-const elements = {
-  navbar: document.getElementById('navbar'),
-  navToggle: document.getElementById('navToggle'),
-  navMenu: document.getElementById('navMenu'),
-  navLinks: document.querySelectorAll('.nav-link'),
-  typingText: document.getElementById('typingText'),
-  projectsGrid: document.getElementById('projectsGrid'),
-  modal: document.getElementById('projectModal'),
-  modalOverlay: document.getElementById('modalOverlay'),
-  modalClose: document.getElementById('modalClose'),
-  contactForm: document.getElementById('contactForm'),
-  statNumbers: document.querySelectorAll('.stat-number'),
-  skillCards: document.querySelectorAll('.skill-card')
-};
-
-// ============================================
-// INITIALIZATION
-// ============================================
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('%c🚀 Portfolio Loaded', 'color: #7b5858; font-size: 20px; font-weight: bold;');
-  
-  initNavigation();
-  initTypingAnimation();
-  initScrollEffects();
-  initProjects();
-  initModal();
-  initContactForm();
-  initStatsCounter();
-  initSkillBars();
-  initImageProtection();
-});
-
-// ============================================
-// NAVIGATION
-// ============================================
-function initNavigation() {
-  // Mobile menu toggle
-  if (elements.navToggle) {
-    elements.navToggle.addEventListener('click', toggleMenu);
-  }
-  
-  // Close menu on link click
-  elements.navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      if (state.isMenuOpen) {
-        toggleMenu();
+    let current = "";
+    sections.forEach((section) => {
+      if (window.scrollY >= section.offsetTop - 100) {
+        current = section.id;
       }
-      updateActiveLink(link);
+    });
+
+    navLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === "#" + current) {
+        link.classList.add("active");
+      }
+    });
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+})();
+
+// ============================================
+// MOBILE MENU TOGGLE
+// ============================================
+(function initMobileMenu() {
+  const toggle = document.getElementById("navToggle");
+  const menu = document.getElementById("navMobile");
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener("click", () => {
+    const isOpen = menu.classList.toggle("open");
+    toggle.classList.toggle("open", isOpen);
+    toggle.setAttribute("aria-expanded", isOpen);
+  });
+
+  menu.querySelectorAll(".nav-link").forEach((link) => {
+    link.addEventListener("click", () => {
+      menu.classList.remove("open");
+      toggle.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
     });
   });
-  
-  // Navbar scroll effect
-  window.addEventListener('scroll', handleNavbarScroll);
-  
-  // Update active link on scroll
-  window.addEventListener('scroll', updateActiveLinkOnScroll);
-}
-
-function toggleMenu() {
-  state.isMenuOpen = !state.isMenuOpen;
-  elements.navMenu.classList.toggle('active');
-  elements.navToggle.classList.toggle('active');
-}
-
-function handleNavbarScroll() {
-  if (window.scrollY > 50) {
-    elements.navbar.classList.add('scrolled');
-  } else {
-    elements.navbar.classList.remove('scrolled');
-  }
-}
-
-function updateActiveLink(activeLink) {
-  elements.navLinks.forEach(link => link.classList.remove('active'));
-  activeLink.classList.add('active');
-}
-
-function updateActiveLinkOnScroll() {
-  const sections = document.querySelectorAll('section[id]');
-  const scrollPos = window.scrollY + 100;
-  
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop;
-    const sectionHeight = section.offsetHeight;
-    const sectionId = section.getAttribute('id');
-    
-    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-      const correspondingLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-      if (correspondingLink) {
-        updateActiveLink(correspondingLink);
-      }
-    }
-  });
-}
+})();
 
 // ============================================
-// TYPING ANIMATION
+// HERO TYPING EFFECT
 // ============================================
-function initTypingAnimation() {
-  if (!elements.typingText) return;
-  
+(function initTyping() {
+  const el = document.getElementById("heroTyped");
+  if (!el) return;
+
   const phrases = [
-    'System Developer',
-    'IT Support Specialist',
-    'Problem Solver',
-    'Code Enthusiast'
+    "Junior Technical Support",
+    "System Developer",
+    "Linux & Server Admin",
+    "IT Problem Solver",
   ];
-  
+
   let phraseIndex = 0;
   let charIndex = 0;
-  let isDeleting = false;
-  
-  function type() {
-    const currentPhrase = phrases[phraseIndex];
-    
-    if (isDeleting) {
-      elements.typingText.textContent = currentPhrase.substring(0, charIndex - 1);
-      charIndex--;
-    } else {
-      elements.typingText.textContent = currentPhrase.substring(0, charIndex + 1);
+  let deleting = false;
+  const TYPING_SPEED = 75;
+  const DELETING_SPEED = 40;
+  const PAUSE_END = 2000;
+  const PAUSE_START = 400;
+
+  function tick() {
+    const current = phrases[phraseIndex];
+    if (!deleting) {
+      el.textContent = current.slice(0, charIndex + 1);
       charIndex++;
-    }
-    
-    let typingSpeed = isDeleting ? 50 : 100;
-    
-    if (!isDeleting && charIndex === currentPhrase.length) {
-      typingSpeed = 2000;
-      isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      phraseIndex = (phraseIndex + 1) % phrases.length;
-      typingSpeed = 500;
-    }
-    
-    setTimeout(type, typingSpeed);
-  }
-  
-  type();
-}
-
-// ============================================
-// SCROLL EFFECTS
-// ============================================
-function initScrollEffects() {
-  const observerOptions = {
-    threshold: 0.2,
-    rootMargin: '0px'
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
+      if (charIndex === current.length) {
+        deleting = true;
+        setTimeout(tick, PAUSE_END);
+        return;
       }
-    });
-  }, observerOptions);
-  
-  // Observe sections
-  document.querySelectorAll('section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(30px)';
-    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(section);
-  });
-}
-
-// ============================================
-// PROJECTS
-// ============================================
-function initProjects() {
-  if (!elements.projectsGrid) return;
-  
-  renderProjects();
-}
-
-function renderProjects() {
-  elements.projectsGrid.innerHTML = projectsData.map(project => {
-    const isVideo = project.image.endsWith('.mp4');
-    const mediaElement = isVideo 
-      ? `<video src="${project.image}" class="project-image" muted loop autoplay playsinline></video>`
-      : `<img src="${project.image}" alt="${project.title}" class="project-image" loading="lazy">`;
-    
-    return `
-    <article class="project-card" data-project-id="${project.id}">
-      ${mediaElement}
-      <div class="project-content">
-        <h3 class="project-title">${project.title}</h3>
-        <p class="project-description">${project.description}</p>
-        <div class="project-tags">
-          ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}
-        </div>
-        <a href="#" class="project-link" data-project-id="${project.id}">
-          View Details →
-        </a>
-      </div>
-    </article>
-  `;
-  }).join('');
-  
-  // Add click handlers
-  document.querySelectorAll('.project-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const projectId = parseInt(e.target.dataset.projectId);
-      openProjectModal(projectId);
-    });
-  });
-  
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('project-link')) {
-        const projectId = parseInt(card.dataset.projectId);
-        openProjectModal(projectId);
+      setTimeout(tick, TYPING_SPEED);
+    } else {
+      el.textContent = current.slice(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) {
+        deleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        setTimeout(tick, PAUSE_START);
+        return;
       }
-    });
-  });
-}
-
-// ============================================
-// MODAL
-// ============================================
-function initModal() {
-  if (!elements.modal) return;
-  
-  // Close button
-  if (elements.modalClose) {
-    elements.modalClose.addEventListener('click', closeModal);
-  }
-  
-  // Overlay click
-  if (elements.modalOverlay) {
-    elements.modalOverlay.addEventListener('click', closeModal);
-  }
-  
-  // Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && state.isModalOpen) {
-      closeModal();
+      setTimeout(tick, DELETING_SPEED);
     }
-  });
-}
+  }
 
-function openProjectModal(projectId) {
-  const project = projectsData.find(p => p.id === projectId);
-  if (!project) return;
-  
-  state.currentProject = project;
-  state.isModalOpen = true;
-  
-  // Populate modal - Handle both images and videos
-  const modalImageContainer = document.querySelector('.modal-content');
-  const oldMedia = modalImageContainer.querySelector('.modal-image, .modal-video');
-  const isVideo = project.image.endsWith('.mp4');
-  
-  if (oldMedia) {
-    oldMedia.remove();
-  }
-  
-  let mediaElement;
-  if (isVideo) {
-    mediaElement = document.createElement('video');
-    mediaElement.className = 'modal-image modal-video';
-    mediaElement.src = project.image;
-    mediaElement.controls = true;
-    mediaElement.autoplay = true;
-    mediaElement.loop = true;
-  } else {
-    mediaElement = document.createElement('img');
-    mediaElement.className = 'modal-image';
-    mediaElement.src = project.image;
-    mediaElement.alt = project.title;
-  }
-  
-  modalImageContainer.insertBefore(mediaElement, modalImageContainer.querySelector('.modal-body'));
-  
-  document.getElementById('modalTitle').textContent = project.title;
-  document.getElementById('modalDescription').textContent = project.fullDescription;
-  
-  // Tags
-  const tagsContainer = document.getElementById('modalTags');
-  tagsContainer.innerHTML = project.tags.map(tag => 
-    `<span class="modal-tag">${tag}</span>`
-  ).join('');
-  
-  // Features
-  const featuresList = document.getElementById('modalFeatures');
-  featuresList.innerHTML = project.features.map(feature => 
-    `<li>${feature}</li>`
-  ).join('');
-  
-  // Links
-  document.getElementById('modalLiveLink').href = project.liveUrl;
-  document.getElementById('modalGithubLink').href = project.githubUrl;
-  
-  // Show modal
-  elements.modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-  
-  // Focus trap
-  const focusableElements = elements.modal.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  tick();
+})();
+
+// ============================================
+// SCROLL REVEAL ANIMATION
+// ============================================
+(function initReveal() {
+  const items = document.querySelectorAll(".reveal");
+  if (!items.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 },
   );
-  if (focusableElements.length > 0) {
-    focusableElements[0].focus();
-  }
-}
 
-function closeModal() {
-  state.isModalOpen = false;
-  state.currentProject = null;
-  
-  elements.modal.classList.remove('active');
-  document.body.style.overflow = '';
-}
+  items.forEach((item) => observer.observe(item));
+})();
 
 // ============================================
 // CONTACT FORM
 // ============================================
-function initContactForm() {
-  if (!elements.contactForm) return;
-  
-  elements.contactForm.addEventListener('submit', handleFormSubmit);
-  // Remove error message on blur (but do not show notification)
-  const inputs = elements.contactForm.querySelectorAll('input, textarea');
-  inputs.forEach(input => {
-    input.addEventListener('blur', () => {
-      // Only remove error message and border color
-      const existingError = input.parentElement.querySelector('.error-message');
-      if (existingError) existingError.remove();
-      input.style.borderColor = '';
-    });
-  });
-}
+(function initContactForm() {
+  const form = document.getElementById("contactForm");
+  const status = document.getElementById("formStatus");
+  const submit = document.getElementById("formSubmit");
+  if (!form || !status || !submit) return;
 
-function validateField(field) {
-  const value = field.value.trim();
-  let isValid = true;
-  let errorMessage = '';
-  
-  if (field.hasAttribute('required') && !value) {
-    isValid = false;
-    errorMessage = 'This field is required';
-  } else if (field.type === 'email' && value) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(value)) {
-      isValid = false;
-      errorMessage = 'Please enter a valid email';
-    }
+  function showStatus(message, type) {
+    status.textContent = message;
+    status.className = "form-status " + type;
   }
-  
-  // Remove existing error
-  const existingError = field.parentElement.querySelector('.error-message');
-  if (existingError) {
-    existingError.remove();
-  }
-  // Add error if invalid
-  if (!isValid) {
-    field.style.borderColor = 'var(--color-error)';
-    const error = document.createElement('small');
-    error.className = 'error-message';
-    error.style.color = 'var(--color-error)';
-    error.style.fontSize = '0.85rem';
-    error.style.marginTop = '4px';
-    error.style.display = 'block';
-    error.textContent = errorMessage;
-    field.parentElement.appendChild(error);
-  } else {
-    field.style.borderColor = 'var(--color-success)';
-    setTimeout(() => {
-      field.style.borderColor = '';
-    }, 2000);
-  }
-  return isValid;
-}
 
-function handleFormSubmit(e) {
-  e.preventDefault();
-  
-  const formData = new FormData(elements.contactForm);
-  
-  // Validate all fields
-  const inputs = elements.contactForm.querySelectorAll('input, textarea');
-  let allValid = true;
-  let firstInvalidField = null;
-  inputs.forEach(input => {
-    if (!validateField(input)) {
-      allValid = false;
-      if (!firstInvalidField) firstInvalidField = input;
-    }
-  });
-  if (!allValid) {
-    if (firstInvalidField) {
-      showNotification('This field is required', 'error');
-      firstInvalidField.focus();
-    }
-    return;
-  }
-  
-  // Disable submit button to prevent double submission
-  const submitBtn = elements.contactForm.querySelector('button[type="submit"]');
-  const originalText = submitBtn.textContent;
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending...';
-  
-  // Check if running on GitHub Pages or static hosting
-  const isStaticHosting = window.location.hostname.includes('github.io') || 
-                          !window.location.hostname.includes('localhost');
-  
-  if (isStaticHosting) {
-    // Use FormSubmit.co (free form backend for static sites)
-    // Replace with your email or use Formspree/Web3Forms
-    const formSubmitEndpoint = 'https://formsubmit.co/ajax/jhonrex.rivera.benavente@gmail.com'; // Replace with your email
-    
-    fetch(formSubmitEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        name: formData.get('name'),
-        email: formData.get('email'),
-        message: formData.get('message'),
-        _subject: 'New Contact Form Submission - Portfolio',
-        _captcha: 'false'
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        showNotification('Message sent successfully! I will get back to you soon.', 'success');
-        elements.contactForm.reset();
-      } else if (data.message && data.message.includes('verify your email address')) {
-        showNotification('Please check your email and verify it with FormSubmit.co before you can receive messages.', 'error');
-      } else {
-        showNotification('Failed to send message. Please try again.', 'error');
-      }
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    })
-    .catch(error => {
-      console.error('Fetch error:', error);
-      // Fallback: Open email client
-      const mailtoLink = `mailto:jhonrex.rivera.benavente@gmail.com?subject=Contact from Portfolio&body=Name: ${formData.get('name')}%0D%0AEmail: ${formData.get('email')}%0D%0A%0D%0AMessage:%0D%0A${formData.get('message')}`;
-      window.location.href = mailtoLink;
-      showNotification('Opening email client...', 'success');
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    });
-  } else {
-    // Use PHP backend for local/traditional hosting
-    fetch('contact.php', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => {
-      console.log('Response status:', response.status);
-      if (!response.ok) {
-        throw new Error('HTTP error ' + response.status);
-      }
-      return response.text();
-    })
-    .then(text => {
-      console.log('Response text:', text);
-      try {
-        const data = JSON.parse(text);
-        if (data.success) {
-          showNotification(data.message, 'success');
-          elements.contactForm.reset();
-        } else {
-          // Show debug info in console if available
-          if (data.debug) {
-            console.error('Server error:', data.debug);
-          }
-          showNotification(data.message, 'error');
-        }
-      } catch (e) {
-        console.error('JSON parse error:', e);
-        console.error('Response was:', text);
-        showNotification('Server error. Please check console for details.', 'error');
-      }
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    })
-    .catch(error => {
-      console.error('Fetch error:', error);
-      showNotification('Connection error: ' + error.message, 'error');
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    });
-  }
-}
-
-function showNotification(message, type = 'success') {
-  // Remove existing notification
-  const existing = document.querySelector('.notification');
-  if (existing) existing.remove();
-  
-  const notification = document.createElement('div');
-  notification.className = 'notification';
-  notification.style.cssText = `
-    position: fixed;
-    top: 90px;
-    right: 20px;
-    padding: 16px 24px;
-    background: ${type === 'success' ? 'var(--color-success)' : 'var(--color-error)'};
-    color: white;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-lg);
-    z-index: 10000;
-    animation: slideInRight 0.3s ease;
-    font-weight: 500;
-    max-width: 400px;
-  `;
-  notification.textContent = message;
-  
-  // Add animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideInRight {
-      from {
-        opacity: 0;
-        transform: translateX(100%);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    @keyframes slideOutRight {
-      from {
-        opacity: 1;
-        transform: translateX(0);
-      }
-      to {
-        opacity: 0;
-        transform: translateX(100%);
-      }
-    }
-  `;
-  document.head.appendChild(style);
-  
-  document.body.appendChild(notification);
-  
-  setTimeout(() => {
-    notification.style.animation = 'slideOutRight 0.3s ease';
-    setTimeout(() => notification.remove(), 300);
-  }, 4000);
-}
-
-// ============================================
-// STATS COUNTER
-// ============================================
-function initStatsCounter() {
-  if (elements.statNumbers.length === 0) return;
-  
-  const observerOptions = {
-    threshold: 0.5,
-    rootMargin: '0px'
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-        entry.target.classList.add('counted');
-        animateCounter(entry.target);
-      }
-    });
-  }, observerOptions);
-  
-  elements.statNumbers.forEach(stat => observer.observe(stat));
-}
-
-function animateCounter(element) {
-  const target = parseInt(element.dataset.target);
-  const duration = 2000;
-  const increment = target / (duration / 16);
-  let current = 0;
-  
-  const updateCounter = () => {
-    current += increment;
-    if (current < target) {
-      element.textContent = Math.floor(current);
-      requestAnimationFrame(updateCounter);
-    } else {
-      element.textContent = target;
-    }
-  };
-  
-  updateCounter();
-}
-
-// ============================================
-// SKILL BARS
-// ============================================
-function initSkillBars() {
-  if (elements.skillCards.length === 0) return;
-  
-  const observerOptions = {
-    threshold: 0.3,
-    rootMargin: '0px'
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !entry.target.classList.contains('animate')) {
-        entry.target.classList.add('animate');
-        const progressBar = entry.target.querySelector('.skill-progress');
-        if (progressBar) {
-          const progress = progressBar.dataset.progress;
-          progressBar.style.width = progress + '%';
-        }
-      }
-    });
-  }, observerOptions);
-  
-  elements.skillCards.forEach(card => observer.observe(card));
-}
-
-// ============================================
-// IMAGE PROTECTION
-// ============================================
-function initImageProtection() {
-  // Disable right-click on images
-  document.addEventListener('contextmenu', (e) => {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-      return false;
-    }
-  });
-  
-  // Disable drag on images
-  document.addEventListener('dragstart', (e) => {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-      return false;
-    }
-  });
-  
-  // Disable common keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
-    // Ctrl/Cmd + S (Save)
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-      e.preventDefault();
-      return false;
-    }
-    
-    // Ctrl/Cmd + U (View Source)
-    if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
-      e.preventDefault();
-      return false;
-    }
-  });
-}
-
-// ============================================
-// SMOOTH SCROLL
-// ============================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const href = this.getAttribute('href');
-    if (href === '#' || href === '#!') return;
-    
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const target = document.querySelector(href);
-    
-    if (target) {
-      const offsetTop = target.offsetTop - 80;
-      window.scrollTo({
-        top: offsetTop,
-        behavior: 'smooth'
+    showStatus("", "");
+
+    const name = form.querySelector('[name="name"]').value.trim();
+    const email = form.querySelector('[name="email"]').value.trim();
+    const subject = form.querySelector('[name="subject"]').value.trim();
+    const message = form.querySelector('[name="message"]').value.trim();
+
+    if (!name || !email || !subject || !message) {
+      showStatus("Please fill in all fields.", "error");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showStatus("Please enter a valid email address.", "error");
+      return;
+    }
+
+    submit.disabled = true;
+    submit.textContent = "Sending...";
+
+    try {
+      const res = await fetch(form.action || "contact.php", {
+        method: "POST",
+        body: new FormData(form),
       });
+      if (res.ok) {
+        showStatus(
+          "Message sent! I'll get back to you within 24 hours.",
+          "success",
+        );
+        form.reset();
+      } else {
+        showStatus("Something went wrong. Please email me directly.", "error");
+      }
+    } catch (_) {
+      showStatus("Network error. Please email me directly.", "error");
+    } finally {
+      submit.disabled = false;
+      submit.innerHTML =
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
     }
   });
-});
-
-// ============================================
-// PORTFOLIO SCREENSHOT GENERATOR
-// ============================================
-function generatePortfolioThumbnail() {
-  // Check if portfolio.jpg already exists by trying to load it
-  const portfolioProject = projectsData.find(p => p.id === 4);
-  if (!portfolioProject) return;
-  
-  const img = new Image();
-  img.src = 'portfolio.jpg';
-  
-  img.onerror = () => {
-    // If image doesn't exist, create a placeholder canvas
-    const canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 450;
-    const ctx = canvas.getContext('2d');
-    
-    // Create gradient background
-    const gradient = ctx.createLinearGradient(0, 0, 800, 450);
-    gradient.addColorStop(0, '#7b5858');
-    gradient.addColorStop(1, '#ac6969');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 800, 450);
-    
-    // Add text
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 48px Poppins, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Portfolio Website', 400, 200);
-    
-    ctx.font = '24px Poppins, sans-serif';
-    ctx.fillText('Jhon Rex Benavente', 400, 250);
-    
-  ctx.font = '18px Poppins, sans-serif';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-  ctx.fillText('System Developer & IT Support Specialist', 400, 290);
-    
-    // Update the project image with canvas data
-    portfolioProject.image = canvas.toDataURL('image/jpeg', 0.9);
-    
-    // Re-render projects to show the generated image
-    renderProjects();
-  };
-}
-
-// ============================================
-// PERFORMANCE MONITORING
-// ============================================
-window.addEventListener('load', () => {
-  if (window.performance && window.performance.timing) {
-    const perfData = window.performance.timing;
-    const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-    console.log(`%c✅ Page loaded in ${pageLoadTime}ms`, 'color: var(--color-success); font-weight: bold;');
-  }
-  
-  // Generate portfolio thumbnail if needed
-  setTimeout(generatePortfolioThumbnail, 500);
-});
-
-// ============================================
-// ERROR HANDLING
-// ============================================
-window.addEventListener('error', (e) => {
-  console.error('Error:', e.error);
-});
-
-window.addEventListener('unhandledrejection', (e) => {
-  console.error('Unhandled promise rejection:', e.reason);
-});
-
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
-function throttle(func, limit) {
-  let inThrottle;
-  return function(...args) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
-}
-
-// Optimize scroll handlers
-window.addEventListener('scroll', throttle(handleNavbarScroll, 100));
-window.addEventListener('scroll', throttle(updateActiveLinkOnScroll, 100));
-
-// ============================================
-// END OF SCRIPT
-// ============================================
+})();

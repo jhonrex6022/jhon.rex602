@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/config.php';
+
 // Debug log function
 function debug_log($msg) {
     file_put_contents(__DIR__ . '/contact_debug.log', date('Y-m-d H:i:s') . ' ' . $msg . "\n", FILE_APPEND);
@@ -83,12 +85,12 @@ try {
     debug_log('Configuring SMTP settings');
     // Server settings
     $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
+    $mail->Host = SMTP_HOST;
     $mail->SMTPAuth = true;
-    $mail->Username = 'jhonrex.rivera.benavente@gmail.com';
-    $mail->Password = 'iada mbki shvq cmne';
+    $mail->Username = SMTP_USERNAME;
+    $mail->Password = SMTP_PASSWORD;
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->Port = SMTP_PORT;
     $mail->Timeout = 30; // Increase timeout to 30 seconds
 
     $mail->SMTPOptions = array(
@@ -100,8 +102,8 @@ try {
     );
 
     debug_log('Setting email addresses');
-    $mail->setFrom('jhonrex.rivera.benavente@gmail.com', 'Portfolio Contact Form');
-    $mail->addAddress('jhonrex.rivera.benavente@gmail.com', 'Jhon Rex Benavente');
+    $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+    $mail->addAddress(MAIL_TO, MAIL_TO_NAME);
     $mail->addReplyTo($email, $name);
 
     debug_log('Setting email content');
@@ -139,6 +141,6 @@ try {
         debug_log('SMTP authentication error detected');
     }
     
-    echo json_encode(['success' => false, 'message' => $userMessage, 'debug' => $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => $userMessage]);
 }
 ?>
